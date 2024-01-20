@@ -83,32 +83,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </style>
 </head>
 <body>
-    <div class="col-6 mt-5">
-            <h1 class="display-6">Register Here</h1>
-                <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data">
-                    <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">Username:</label>
-                        <input type="text" class="form-control" id="exampleInputPassword1" name="username">
-                    </div>
-                    <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">Password:</label>
-                        <input type="password" class="form-control" id="exampleInputPassword1" name="password">
-                    </div>
-                    <div class="mb-3">
-                        <label for="file" class="form-label">Upload Your Photo Here:</label>
-                        <input type="file" class="form-control" id="file" name="file">
-                    </div>
+    <div class="container d-flex justify-content-center">
+        <div class="col-6 mt-5">
+                <h1 class="display-6 text-center">Register Here</h1>
+                    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="exampleInputPassword1" class="form-label">Username:</label>
+                            <input type="text" class="form-control" id="exampleInputPassword1" name="username">
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputPassword1" class="form-label">Password:</label>
+                            <input type="password" class="form-control" id="exampleInputPassword1" name="password">
+                        </div>
+                        <div class="mb-3">
+                            <label for="file" class="form-label">Upload Your Photo Here:</label>
+                            <input type="file" class="form-control" id="file" name="file">
+                        </div>
 
-                    <button type="submit" class="btn btn-primary w-100" name="submit">Register</button>
-                </form>
+                        <button type="submit" class="btn btn-primary w-100" name="submit">Register</button>
+                    </form>
 
-                <p>Already have an account? <a href="login.php">Login here</a></p>
-            </div>
+                    <p>Already have an account? <a href="login.php">Login here</a></p>
+        </div>
+    </div>
 
-
-
-
-
-    
 </body>
 </html>

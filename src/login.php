@@ -50,30 +50,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
 
-    <div class="col-6  mt-5">
-            <h1 class="display-6">Login Here</h1>
-                <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                    <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">Username</label>
-                        <input type="text" class="form-control" id="exampleInputPassword1" name="username">
-                    </div>
-                    <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="exampleInputPassword1" name="password">
-                    </div>
+    <div class="container d-flex justify-content-center">
+        <div class="col-6  mt-5">
 
-                    <button type="submit" class="btn btn-primary w-100" name="login">Log In</button>
-                </form>
+                <h1 class="display-6 text-center">Login Here</h1>
+                    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                        <div class="mb-3">
+                            <label for="exampleInputPassword1" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="exampleInputPassword1" name="username">
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputPassword1" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="exampleInputPassword1" name="password">
+                        </div>
 
-                            <?php
-                if (isset($error)) {
-                    echo "<p style='color: red;'>$error</p>";
-                }
-                ?>
+                        <button type="submit" class="btn btn-primary w-100" name="login">Log In</button>
+                    </form>
 
-                <p>Don't have an account? <a href="register.php">Register here</a></p>
+                    <?php
+                        if (isset($error)) {
+                            echo "<p style='color: red;'>$error</p>";
+                        }
+                    ?>
+
+                    <p>Don't have an account? <a href="register.php">Register here</a></p>
+        </div>
+    </div>
 
 
-            </div>
 </body>
 </html>
