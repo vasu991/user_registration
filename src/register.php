@@ -13,7 +13,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Get username and password from the form
     $username = $_POST['username'];
     $password = $_POST['password'];
-    $file = $_FILES['fileInput']['name'];
 
     // Check if the username is already taken
     $checkUsernameQuery = "SELECT * FROM users WHERE username = '$username'";
@@ -22,21 +21,45 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($checkResult->num_rows > 0) {
         $error = "Username already taken. Please choose a different one.";
     } else {
-        // Insert new user into the database
-        $insertQuery = "INSERT INTO `users`(`username`, `password`, `file`) VALUES ('$username','$password', '$file')";
 
-        $fileName = $_FILES['fileInput']['name'];
-        $tempName = $_FILES['fileInput']['tmp_name'];
-        $folder = "uploads/".$fileName;
-        move_uploaded_file($tempName, $folder);
+        echo "<pre>";
+	print_r($_FILES['file']);
+	echo "</pre>";
 
-        if ($conn->query($insertQuery) === TRUE) {
-            $_SESSION['username'] = $username;
-            header("Location: welcome.php");
-            exit();
-        } else {
-            $error = "Error: " . $conn->error;
-        }
+	$img_name = $_FILES['file']['name'];
+	$img_size = $_FILES['file']['size'];
+	$tmp_name = $_FILES['file']['tmp_name'];
+	$error = $_FILES['file']['error'];
+
+	if ($error === 0) {
+		if ($img_size > 12500000000000) {
+			$em = "Sorry, your file is too large.";
+		    header("Location: register.php?error=$em");
+		}else {
+			$img_ex = pathinfo($img_name, PATHINFO_EXTENSION);
+			$img_ex_lc = strtolower($img_ex);
+
+			$allowed_exs = array("jpg", "jpeg", "png"); 
+
+			if (in_array($img_ex_lc, $allowed_exs)) {
+				$new_img_name = uniqid("IMG-", true).'.'.$img_ex_lc;
+				$img_upload_path = 'uploads/'.$new_img_name;
+				move_uploaded_file($tmp_name, $img_upload_path);
+
+				// Insert into Database
+
+                        $sql = "INSERT INTO `users`(`username`, `password`, `file_name`, `file_path`) VALUES ('$username','$password', '$new_img_name', '$img_upload_path')";
+				mysqli_query($conn, $sql);
+				header("Location: welcome.php");
+			}else {
+				$em = "You can't upload files of this type";
+		        header("Location: register.php?error=$em");
+			}
+		}
+	}else {
+		$em = "unknown error occurred!";
+		header("Location: register.php?error=$em");
+	}
     }
 
     $conn->close();
@@ -72,8 +95,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <input type="password" class="form-control" id="exampleInputPassword1" name="password">
                     </div>
                     <div class="mb-3">
-                        <label for="fileInput" class="form-label">Upload Your Photo Here:</label>
-                        <input type="file" class="form-control" id="fileInput" name="fileInput">
+                        <label for="file" class="form-label">Upload Your Photo Here:</label>
+                        <input type="file" class="form-control" id="file" name="file">
                     </div>
 
                     <button type="submit" class="btn btn-primary w-100" name="submit">Register</button>
@@ -82,11 +105,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <p>Already have an account? <a href="login.php">Login here</a></p>
             </div>
 
-            <?php
-    if (isset($error)) {
-        echo "<p style='color: red;'>$error</p>";
-    }
-    ?>
 
 
 
