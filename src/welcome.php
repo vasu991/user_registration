@@ -5,7 +5,9 @@ require_once "config.php";
 
 $username = $_SESSION['username'];
 
-$select_query = "SELECT * FROM users WHERE username ='$username'";
+$password  = $_SESSION['password'];
+
+$select_query = "SELECT * FROM users WHERE username ='$username' AND password = '$password'";
 $result = $conn->query($select_query);
 
 

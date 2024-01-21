@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'];
 
     // Check if the username is already taken
-    $checkUsernameQuery = "SELECT * FROM users WHERE username = '$username'";
+    $checkUsernameQuery = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
     $checkResult = $conn->query($checkUsernameQuery);
 
     if ($checkResult->num_rows > 0) {
@@ -23,8 +23,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
 
         echo "<pre>";
-	print_r($_FILES['file']);
-	echo "</pre>";
+        print_r($_FILES['file']);
+        echo "</pre>";
 
 	$img_name = $_FILES['file']['name'];
 	$img_size = $_FILES['file']['size'];
@@ -35,31 +35,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		if ($img_size > 12500000000000) {
 			$em = "Sorry, your file is too large.";
 		    header("Location: register.php?error=$em");
-		}else {
-			$img_ex = pathinfo($img_name, PATHINFO_EXTENSION);
-			$img_ex_lc = strtolower($img_ex);
+            } else {
+                $img_ex = pathinfo($img_name, PATHINFO_EXTENSION);
+                $img_ex_lc = strtolower($img_ex);
 
-			$allowed_exs = array("jpg", "jpeg", "png"); 
+                $allowed_exs = array("jpg", "jpeg", "png"); 
 
-			if (in_array($img_ex_lc, $allowed_exs)) {
-				$new_img_name = uniqid("IMG-", true).'.'.$img_ex_lc;
-				$img_upload_path = 'uploads/'.$new_img_name;
-				move_uploaded_file($tmp_name, $img_upload_path);
+                if (in_array($img_ex_lc, $allowed_exs)) {
+                    $new_img_name = uniqid("IMG-", true).'.'.$img_ex_lc;
+                    $img_upload_path = 'uploads/'.$new_img_name;
+                    move_uploaded_file($tmp_name, $img_upload_path);
 
-				// Insert into Database
+                    // Insert into Database
 
-                        $sql = "INSERT INTO `users`(`username`, `password`, `file_name`, `file_path`) VALUES ('$username','$password', '$new_img_name', '$img_upload_path')";
-				mysqli_query($conn, $sql);
-				header("Location: welcome.php");
-			}else {
-				$em = "You can't upload files of this type";
-		        header("Location: register.php?error=$em");
-			}
-		}
-	}else {
-		$em = "unknown error occurred!";
-		header("Location: register.php?error=$em");
-	}
+                            $sql = "INSERT INTO `users`(`username`, `password`, `file_name`, `file_path`) VALUES ('$username','$password', '$new_img_name', '$img_upload_path')";
+                    mysqli_query($conn, $sql);
+                    header("Location: welcome.php");
+                }else {
+                    $em = "You can't upload files of this type";
+                    header("Location: register.php?error=$em");
+                }
+            }
+        } else {
+            $em = "unknown error occurred!";
+            header("Location: register.php?error=$em");
+        }
     }
 
     $conn->close();
@@ -89,15 +89,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data">
                         <div class="mb-3">
                             <label for="exampleInputPassword1" class="form-label">Username:</label>
-                            <input type="text" class="form-control" id="exampleInputPassword1" name="username">
+                            <input type="text" class="form-control" id="exampleInputPassword1" name="username" required>
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputPassword1" class="form-label">Password:</label>
-                            <input type="password" class="form-control" id="exampleInputPassword1" name="password">
+                            <input type="password" class="form-control" id="exampleInputPassword1" name="password" required>
                         </div>
                         <div class="mb-3">
                             <label for="file" class="form-label">Upload Your Photo Here:</label>
-                            <input type="file" class="form-control" id="file" name="file">
+                            <input type="file" class="form-control" id="file" name="file" required>
                         </div>
 
                         <button type="submit" class="btn btn-primary w-100" name="submit">Register</button>

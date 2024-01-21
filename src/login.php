@@ -22,6 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result->num_rows > 0) {
         // User found, set session variable and redirect
         $_SESSION['username'] = $username;
+        $_SESSION['password'] = $password;
         header("Location: welcome.php");
         exit();
     } else {
