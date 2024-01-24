@@ -1,10 +1,9 @@
 
 <?php
-session_start();
 
 require_once("config.php");
 
-$sql = "SELECT username, password, file_path, id FROM users ORDER BY username DESC";
+$sql = "SELECT username, password, file_path, id FROM users ORDER BY id DESC";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) { ?>
@@ -18,9 +17,13 @@ if ($result->num_rows > 0) { ?>
     margin-right: auto;
     margin-top: 20px;
     margin-bottom: 20px;
+    border-radius: 10px;
     }
     th, td {
     padding: 15px;
+    }
+    body {
+        background-color: lightcyan;
     }
 
     </style>
@@ -33,6 +36,7 @@ if ($result->num_rows > 0) { ?>
     font-family: "Courier New", Courier, monospace;
     font-size: larger;
     border-style: solid;
+    border-radius: 10px;
     '>
     <thead>
         <th>Id</th>
@@ -51,10 +55,13 @@ if ($result->num_rows > 0) { ?>
         echo "<td>". $row["password"] ."</td>";
         echo "<td>" .$row["username"] . "</td>";
         echo '<td>';
-        echo "<img src='" . $row["file_path"] . "' alt='User Photo' style=''>";
+        echo "<img src='" . $row["file_path"] . "'>";
         echo "</td>";
         echo "<td>";
-        echo "<a href='delete_photo.php?id={$row['id']}'>Delete Record</a>";
+        echo "<a href='delete_photo.php?id={$row['id']}'>Delete Photo</a>";
+        echo "<br>";
+        echo "<br>";
+        echo "<a href='update_photo.php?id={$row["id"]}'>Update Photo</a>";
         echo "</td>";
         echo "</tr>";
     }

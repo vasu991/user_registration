@@ -32,30 +32,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	$error = $_FILES['file']['error'];
 
 	if ($error === 0) {
-		if ($img_size > 12500000000000) {
-			$em = "Sorry, your file is too large.";
-		    header("Location: register.php?error=$em");
-            } else {
-                $img_ex = pathinfo($img_name, PATHINFO_EXTENSION);
-                $img_ex_lc = strtolower($img_ex);
-
-                $allowed_exs = array("jpg", "jpeg", "png"); 
-
-                if (in_array($img_ex_lc, $allowed_exs)) {
-                    $new_img_name = uniqid("IMG-", true).'.'.$img_ex_lc;
-                    $img_upload_path = 'uploads/'.$new_img_name;
+                
+                    $img_upload_path = 'uploads/'.$img_name;
                     move_uploaded_file($tmp_name, $img_upload_path);
 
                     // Insert into Database
 
-                    $sql = "INSERT INTO `users`(`username`, `password`, `file_name`, `file_path`) VALUES ('$username','$password', '$new_img_name', '$img_upload_path')";
-                    mysqli_query($conn, $sql);
-                    header("Location: welcome.php");
-                }else {
-                    $em = "You can't upload files of this type";
-                    header("Location: register.php?error=$em");
-                }
-            }
+                    $sql = "INSERT INTO `users`(`username`, `password`, `file_name`, `file_path`) VALUES ('$username','$password', '$img_name', '$img_upload_path')";
+                    if(mysqli_query($conn, $sql)) {
+                        header("Location: welcome.php");
+                    }
+                    else {
+                        echo "error adding record";
+                    }
+ 
         } else {
             $em = "unknown error occurred!";
             header("Location: register.php?error=$em");

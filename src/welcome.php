@@ -4,7 +4,6 @@ session_start();
 require_once "config.php";
 
 $username = $_SESSION['username'];
-
 $password  = $_SESSION['password'];
 
 $select_query = "SELECT * FROM users WHERE username ='$username' AND password = '$password'";
@@ -27,6 +26,8 @@ if (!isset($_SESSION['username'])) {
     header("Location: login.php");
     exit();
 }
+
+$conn -> close();
 ?>
 
 <!DOCTYPE html>
