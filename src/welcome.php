@@ -12,12 +12,16 @@ $result = $conn->query($select_query);
 
 if ($result->num_rows > 0) {
     $user = $result->fetch_assoc();
-    echo "<img src='" . $user["file_path"] . "' alt='User Photo' style='max-width: 600px; min-width: 600px;  display: block;
+    echo "<img src='" . $user["file_path"] . "' alt='User Photo' style='
+    display: block;
     margin-left: auto;
     margin-right: auto;
     margin-top: 20px;
     margin-bottom: 20px;
-    width: 50%;'>";
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    '>";
 } else {
     echo "Login failed. Invalid username or password.";
 }
