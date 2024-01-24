@@ -39,6 +39,7 @@ if ($result->num_rows > 0) { ?>
         <th>Password</th>
         <th>Username</th>
         <th>Photo</th>
+        <th>Operations</th>
     </thead>
     <tbody>
    <?php
@@ -51,7 +52,10 @@ if ($result->num_rows > 0) { ?>
         echo "<td>" .$row["username"] . "</td>";
         echo '<td>';
         echo "<img src='" . $row["file_path"] . "' alt='User Photo' style=''>";
-    echo "</td>";
+        echo "</td>";
+        echo "<td>";
+        echo "<a href='delete_photo.php?id={$row['id']}'>Delete Record</a>";
+        echo "</td>";
         echo "</tr>";
     }
         echo "</tbody>
