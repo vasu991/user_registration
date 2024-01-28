@@ -1,4 +1,3 @@
-
 <?php
 
 require_once("config.php");
@@ -6,7 +5,7 @@ require_once("config.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    $id = $_POST["img_id"];
+    $id = $_POST["id"];
 
     
     $sql_select = "SELECT * FROM users WHERE id = $id";
@@ -14,32 +13,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
+        $new_usr_name = $_POST["new_usr_name"];
 
-        $img_name = $_FILES['file']['name'];
-        $img_size = $_FILES['file']['size'];
-        $tmp_name = $_FILES['file']['tmp_name'];
-        $error = $_FILES['file']['error'];
 
-        if ($error === 0) {
-                    
-            $img_upload_path = 'uploads/'.$img_name;
-            move_uploaded_file($tmp_name, $img_upload_path);
-
-                        // Insert into Database
-
-            $sql_update = "UPDATE users SET file_path = '$img_upload_path', file_name = '$img_name' WHERE id = '$id'";
+            $sql_update = "UPDATE users SET username = '$new_usr_name' WHERE id = '$id'";
 
             if ($conn->query($sql_update) === TRUE) {
                 header("location: records.php");
             } else {
-                echo "Error updating photo: " . $conn->error;
+                echo "Error updating user name: " . $conn->error;
             }
-
-    
-            } else {
-               echo "unkonwn error occured";
-            }
-
 
         
         } else {
@@ -57,9 +40,6 @@ $conn->close();
 
 
 
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -70,7 +50,7 @@ $conn->close();
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Update Photo</title>
+    <title>Update User Name</title>
     <style>
         .error{ color: red;
         }
@@ -79,15 +59,17 @@ $conn->close();
 <body>
     <div class="container d-flex justify-content-center">
         <div class="col-6 mt-5">
-                <h1 class="display-6 text-center">Choose New Photo</h1>
-                    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data">
+                <h1 class="display-6 text-center">Enter New User Name</h1>
+                    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                         <div class="mb-3">
-                            <label for="file" class="form-label">Upload Your Photo Here</label>
-                            <input type="file" class="form-control" id="file" name="file" required>
-                            <input type="hidden" name="img_id" value="<?php echo $_GET['id'] ?>" />
+                            <label for="new_usr_name" class="form-label">Update Your User Name Here</label>
+                            <input type="text" class="form-control" id="new_usr_name" name="new_usr_name"
+                            value="<?php echo $_GET['username']; ?>" 
+                            required>
+                            <input type="hidden" name="id" value="<?php echo $_GET['id'] ?>" />
                         </div>
 
-                        <button type="submit" class="btn btn-primary w-100" name="submit">Upload</button>
+                        <button type="submit" class="btn btn-primary w-100" name="submit">Update</button>
                     </form>
 
         </div>
